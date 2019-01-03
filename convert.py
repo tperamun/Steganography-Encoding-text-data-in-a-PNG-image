@@ -88,21 +88,27 @@ def decode_image(length_of_binary,default_image="basketball_new.png"):
 		
 		binary+= bin(red)[-1] + bin(green)[-1] + bin(blue)[-1]
 		
-	print(binary[0:length_of_binary])
 	return binary[0:length_of_binary]	
 
 
 def main():
 
-	message = "Hii"
-
-	length_of_binary = encode_image(message)
-
-	length_of_message = len(message)
-
-	binary = decode_image(length_of_binary)
+	#image_path = input"Enter image file name")
+	option = input("1. Hide text in image\n2. To retrieve text from image\n\n")
 	
-	print(decode_message(binary))
+	if option == "1":
+		message = input("Enter message to hide: ")
+	
+		print("Your new Image will be saved in baskeball_new.png")
+		length_of_binary = encode_image(message)
+		f = open("tempfile.txt", "w")
+		f.write(str(length_of_binary))
+
+	elif option == "2":
+		f = open("tempfile.txt", "r")
+		length_of_binary = int(f.read())
+		binary = decode_image(length_of_binary)
+		print("The hidden text was : " + decode_message(binary))
 
 
 

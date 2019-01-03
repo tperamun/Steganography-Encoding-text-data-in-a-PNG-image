@@ -20,23 +20,21 @@ def decode_message(binary):
 
 
 
-def encode_image(text_data, default_image = "C:\\basketball.png"):
+def encode_image(text_data, default_image = "basketball.png"):
 	'''
 		Hide the text data in the image
 	'''
 
 	image = Image.open(default_image)
 	binary_data = encode_message(text_data)
-
 	width, height = image.size
 	
 	new_pixels = []
-	same_pixels = []
 	index = 0
 
 	pixels = list(image.getdata())
 	length_of_binary = len(binary_data)
-
+	
 	for pixel in pixels:
 		alpha, red, green, blue = pixel
 		
@@ -64,40 +62,48 @@ def encode_image(text_data, default_image = "C:\\basketball.png"):
 
 	image.putdata(new_pixels)
 
-	image.save("C:\\basketball_new.png")
+	image.save("basketball_new.png")
+	
+	return length_of_binary
+	
 
 
 
 
 
 
-
-
-def decode_image(num_of_pixels_needed, default_image="C:\\basketball_new.png"):
+def decode_image(length_of_binary,default_image="basketball_new.png"):
 	'''
 		The num_of_pixels_needed variable has the first number of pixels where the Text would be encoded in. The rest of the pixels are irrelevant
 	'''
 	
-
+	image = Image.open(default_image)
+	pixels = list(image.getdata())
+	
+	length_of_pixels = len(pixels)
+	
+	binary = ''
+	for pixel in pixels:
+		alpha, red, green, blue = pixel
+		
+		binary+= bin(red)[-1] + bin(green)[-1] + bin(blue)[-1]
+		
+	print(binary[0:length_of_binary])
+	return binary[0:length_of_binary]	
 
 
 def main():
 
 	message = "Hii"
 
-	encode_image(message)
+	length_of_binary = encode_image(message)
 
 	length_of_message = len(message)
 
-	num_of_pixels_needed = length_of_message ** 2
+	binary = decode_image(length_of_binary)
+	
+	print(decode_message(binary))
 
-
-	#print(decode_message(encode_message("hello rarw")))
-	##binary_message = encode_message("hello")
-	#print(len(binary_message))
-
-	#for x in binary_message:
-		#print(x)
 
 
 if __name__ == "__main__":
